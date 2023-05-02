@@ -57,14 +57,16 @@ function init() {
     list_item.innerHTML = '';
     
     myChars.forEach((mychar) => {
-      let item = document.createElement('LI');
-      item.innerText = mychar;
-      list_item.append(item);
+      let dt = document.createElement('DT');
+      dt.className = "character-name";
+      dt.innerText = mychar;
 
-      //list_item.innerHTML += `<li>${mychar}</li>`;
-      //list_item.textContent += getCharacters(myCode);
-      console.log(`House members: ${mychar}`);
-      //myChars.appendChild(list_item);
+      let dd = document.createElement('DD');
+      dd.className = "character-description";
+      dd.innerText = `A member of House ${houses.find(house => house.code === myCode).name}`;
+
+      list_item.append(dt);
+      list_item.append(dd);
       
     });
      
