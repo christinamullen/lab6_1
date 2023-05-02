@@ -1,18 +1,26 @@
 const houses = [{
     code: "ST",
-    name: "Stark"
+    name: "Stark",
+    bkcolor: "--bc-ST",
+    tcolor: "--tc-ST"
   },
   {
     code: "LA",
-    name: "Lannister"
+    name: "Lannister",
+    bkcolor: "--bc-LA",
+    tcolor: "--tc-LA"
   },
   {
     code: "BA",
-    name: "Baratheon"
+    name: "Baratheon",
+    bkcolor: "--bc-BA",
+    tcolor: "--tc-BA"
   },
   {
     code: "TA",
-    name: "Targaryen"
+    name: "Targaryen",
+    bkcolor: "--bc-TA",
+    tcolor: "--tc-TA"
   }
 ];
 
@@ -37,6 +45,8 @@ document.addEventListener('DOMContentLoaded', init);
 
 function init() {
   let dropdown = document.getElementById('house');
+  var r = document.querySelector(':root');
+  var rs = getComputedStyle(r);
   
   // loop through array and create an option tag
   //with the data from the objects
@@ -55,6 +65,16 @@ function init() {
     console.log(myChars);
     let list_item = document.getElementById('characters');
     list_item.innerHTML = '';
+    
+    //set the background color, and text color of the selected field
+    const selectedHouse = houses.find(house => house.code === myCode);
+    if (selectedHouse) {
+      r.style.setProperty('--bk-start', rs.getPropertyValue(selectedHouse.bkcolor));
+      r.style.setProperty('--tc-start', rs.getPropertyValue(selectedHouse.tcolor));
+    } else {
+      r.style.setProperty('--bk-start', rs.getPropertyValue('--bk-start'));
+      r.style.setProperty('--tc-start', rs.getPropertyValue('--tc-start'));
+    }
     
     myChars.forEach((mychar) => {
       let dt = document.createElement('DT');
