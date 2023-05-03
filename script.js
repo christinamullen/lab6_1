@@ -1,26 +1,26 @@
 const houses = [{
     code: "ST",
     name: "Stark",
-    bkcolor: "--bc-ST",
-    tcolor: "--tc-ST"
+    bkcolor: "#D5CEB2",
+    tcolor: "#80808"
   },
   {
     code: "LA",
     name: "Lannister",
-    bkcolor: "--bc-LA",
-    tcolor: "--tc-LA"
+    bkcolor: "#86090A",
+    tcolor: "#c1ac79"
   },
   {
     code: "BA",
     name: "Baratheon",
-    bkcolor: "--bc-BA",
-    tcolor: "--tc-BA"
+    bkcolor: "#F0C403",
+    tcolor: "#212121"
   },
   {
     code: "TA",
     name: "Targaryen",
-    bkcolor: "--bc-TA",
-    tcolor: "--tc-TA"
+    bkcolor: "#212121",
+    tcolor: "#C21920"
   }
 ];
 
@@ -57,8 +57,21 @@ function init() {
     myoption.innerHTML = name;
     dropdown.append(myoption);
   });
+  const fetchColor = async (hexCode) => {
+    try {
+      const response = await fetch('https://www.colr.org/json/color/${hexCode}');
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.log("Error fetching color from API: ", err);
+    }
+  };
+
+
+
+
   //func to respond to the change oc house code from dropdown
-  dropdown.addEventListener('change', (e) => {
+  dropdown.addEventListener('change', async (e) => {
     console.log(e.target.value);
     const myCode = e.target.value;
     const myChars = getCharacters(myCode);
@@ -67,7 +80,7 @@ function init() {
     list_item.innerHTML = '';
     
     //set the background color, and text color of the selected field
-    const selectedHouse = houses.find(house => house.code === myCode);
+    const selectedHouse = houses.find((house) => house.code === myCode);
     if (selectedHouse) {
       r.style.setProperty('--bk-start', rs.getPropertyValue(selectedHouse.bkcolor));
       r.style.setProperty('--tc-start', rs.getPropertyValue(selectedHouse.tcolor));
