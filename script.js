@@ -1,26 +1,26 @@
 const houses = [{
     code: "ST",
     name: "Stark",
-    bkcolor: "#D5CEB2",
-    tcolor: "#80808"
+    bkcolor: "D5CEB2",
+    tcolor: "80808"
   },
   {
     code: "LA",
     name: "Lannister",
-    bkcolor: "#86090A",
-    tcolor: "#c1ac79"
+    bkcolor: "86090A",
+    tcolor: "c1ac79"
   },
   {
     code: "BA",
     name: "Baratheon",
-    bkcolor: "#F0C403",
-    tcolor: "#212121"
+    bkcolor: "F0C403",
+    tcolor: "212121"
   },
   {
     code: "TA",
     name: "Targaryen",
-    bkcolor: "#212121",
-    tcolor: "#C21920"
+    bkcolor: "212121",
+    tcolor: "C21920"
   }
 ];
 
@@ -57,18 +57,17 @@ function init() {
     myoption.innerHTML = name;
     dropdown.append(myoption);
   });
+  
+  //query the api
   const fetchColor = async (hexCode) => {
     try {
-      const response = await fetch('https://www.colr.org/json/color/${hexCode}');
+      const response = await fetch(`https://www.colr.org/json/color/${hexCode}`);
       const data = await response.json();
       return data;
-    } catch (err) {
-      console.log("Error fetching color from API: ", err);
+    } catch (error) {
+      console.log("Error fetching color from API: ", error);
     }
   };
-
-
-
 
   //func to respond to the change oc house code from dropdown
   dropdown.addEventListener('change', async (e) => {
@@ -82,8 +81,11 @@ function init() {
     //set the background color, and text color of the selected field
     const selectedHouse = houses.find((house) => house.code === myCode);
     if (selectedHouse) {
-      r.style.setProperty('--bk-start', rs.getPropertyValue(selectedHouse.bkcolor));
-      r.style.setProperty('--tc-start', rs.getPropertyValue(selectedHouse.tcolor));
+      const bkColorData = await fetchColor(selectedHouse.bkcolor);
+      const txtColorData = await fetchColor(selectedHouse.tcolor);
+      console.log(bkColorData.new_color);
+      r.style.setProperty('--bk-start', '#' + bkColorData.new_color); //use || for default if no response?
+      r.style.setProperty('--tc-start', '#' + txtColorData.new_color);
     } else {
       r.style.setProperty('--bk-start', rs.getPropertyValue('--bk-start'));
       r.style.setProperty('--tc-start', rs.getPropertyValue('--tc-start'));
